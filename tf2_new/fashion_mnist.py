@@ -64,6 +64,34 @@ class FashionModel:
         self.plot_value_array(i, predictions, test_labels)
         plt.show()
 
+        # 처음 X 개의 테스트 이미지와 예측 레이블, 진짜 레이블을 출력합니다
+        # 올바른 예측은 파랑색으로 잘못된 예측은 빨강색으로 나타냅니다
+        num_rows = 5
+        num_cols = 3
+        num_images = num_rows * num_cols
+        plt.figure(figsize=(2 * 2 * num_cols, 2 * num_rows))
+        for i in range(num_images):
+            plt.subplot(num_rows, 2 * num_cols, 2 * i + 1)
+            self.plot_image(i, predictions, test_labels, test_images)
+            plt.subplot(num_rows, 2 * num_cols, 2 * i + 2)
+            self.plot_value_array(i, predictions, test_labels)
+        plt.show()
+
+        # 테스트 세트에서 이미지 하나를 선택합니다
+        img = test_images[0]
+        print(img.shape)
+
+        # 이미지 하나만 사용할 때도 배치에 추가합니다
+        img = (np.expand_dims(img, 0))
+        print(img.shape)
+
+        predictions_single = model.predict(img)
+        print(predictions_single)
+
+        self.plot_value_array(0, predictions_single, test_labels)
+        _ = plt.xticks(range(10), self.class_names, rotation=45)
+        print(np.argmax(predictions_single[0]))
+
     def plot_image(self, i, predictions_array, true_label, img):
         predictions_array, true_label, img = predictions_array[i], true_label[i], img[i]
         plt.grid(False)
@@ -82,6 +110,8 @@ class FashionModel:
                                              100 * np.max(predictions_array),
                                              self.class_names[true_label]),
                    color=color)
+
+
 
     def plot_value_array(self, i, predictions_array, true_label):
         predictions_array, true_label = predictions_array[i], true_label[i]
