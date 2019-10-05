@@ -43,7 +43,7 @@ class CnnModel:
                       metrics=['accuracy'])
 
     def train_model(self):
-        self.model.fit(self.train_images, self.train_labels, epochs=1)
+        self.model.fit(self.train_images, self.train_labels, epochs=5)
 
     def eval_model(self):
         test_loss, test_acc = self.model.evaluate(self.test_images, self.test_labels, verbose=2)
